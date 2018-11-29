@@ -8,7 +8,7 @@
 _______________________________________________________________________________________________________________________________________________________________
 
 
-Application version: ${info.build.version} on profile '${spring.profiles.active}'. Last build: ${last.build.date}. Spring Boot version: ${spring-boot.version}.
+AAApplication version: ${info.build.version} on profile '${spring.profiles.active}'. Last build: ${last.build.date}. Spring Boot version: ${spring-boot.version}.
 
 _______________________________________________________________________________________________________________________________________________________________
 
