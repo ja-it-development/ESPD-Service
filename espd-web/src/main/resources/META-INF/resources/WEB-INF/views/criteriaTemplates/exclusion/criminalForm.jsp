@@ -49,17 +49,19 @@
 			</div>
 		</div>
 	</div>
-	<div class="form-group">
-		<div class="btn-group pull-right hidden-print">
-			<c:if test="${vs.last}">
-				<button id="add_${field}" type="submit" class="btn btn-default btn-sm" name="add_${field}" value="${vs.index + 1}" data-toggle="tooltip" title="Add">
-				<i class="fa fa-plus" aria-hidden="true"></i>
+	<c:if test="${empty show_part_III_addRemoveButtons or show_part_III_addRemoveButtons}">
+		<div class="form-group">
+			<div class="btn-group pull-right hidden-print">
+				<c:if test="${vs.last}">
+					<button id="add_${field}" type="submit" class="btn btn-default btn-sm" name="add_${field}" value="${vs.index + 1}" data-toggle="tooltip" title="Add">
+					<i class="fa fa-plus" aria-hidden="true"></i>
+					</button>
+				</c:if>
+				<button id="remove_${field}" type="submit" class="btn btn-default btn-sm " name="remove_${field}" value="${vs.index}" data-toggle="tooltip" title="Delete">
+					<i class="fa fa-trash" aria-hidden="true"></i>
 				</button>
-			</c:if>
-			<button id="remove_${field}" type="submit" class="btn btn-default btn-sm " name="remove_${field}" value="${vs.index}" data-toggle="tooltip" title="Delete">
-				<i class="fa fa-trash" aria-hidden="true"></i>
-			</button>
+			</div>
 		</div>
-	</div>
+	</c:if>
 	<hr/>
 </c:forEach>

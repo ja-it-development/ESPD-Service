@@ -29,7 +29,7 @@
     <groupId>eu.europa.ec.grow.espd</groupId>
     <artifactId>espd</artifactId>
     <packaging>pom</packaging>
-    <version>2018.04</version>
+    <version>2018.04-bsp-SNAPSHOT</version>
     <modules>
         <module>espd-web</module>
         <module>espd-docs</module>
@@ -78,8 +78,17 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.1.RELEASE</version>
+        <version>1.4.7.RELEASE</version>
     </parent>
+
+    <distributionManagement>
+        <!-- deploy allowed only from internal network -->
+        <snapshotRepository>
+            <id>repo</id>
+            <name>repo-snapshots</name>
+            <url>http://midevtl01:8080/artifactory/simple/ext-snapshot-local/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <java.version>1.7</java.version>

@@ -28,6 +28,9 @@
   ~
   --%>
 <tiles:importAttribute name="agent"/>
+
+<c:set var="ESOP_SESSION" value="${not empty sessionScope.ESOP_VISITORID}"/>
+
 <form:form id="espdform" role="form" class="form-horizontal" method="post" commandName="espd" data-toggle="validator">
     <div class="panel-default">
         <tiles:insertDefinition name="progress">
@@ -41,16 +44,36 @@
 
         <div class="panel panel-espd">
             <div class="panel-heading" data-toggle="collapse" data-target="#finish-statements-section">
-                <h4 class="panel-title">${span18n['createcafinish_export']}</h4>
+                <h4 class="panel-title">
+                    <c:choose>
+                    <c:when test="${not ESOP_SESSION}">
+                            ${span18n['createcafinish_export']}
+                    </c:when>
+                        <c:otherwise>
+                            ${span18n['esop_createcafinish_export']}
+                        </c:otherwise>
+                    </c:choose>
+                </h4>
             </div>
             <div id="finish-statements-section" class="collapse in">
                 <div class="espd-panel-body panel-body">
                     <span data-i18n="createcafinish_export_content">
-                        <s:message code='createcafinish_export_content'/>
+                        <c:choose>
+                            <c:when test="${not ESOP_SESSION}">
+                                <s:message code='createcafinish_export_content'/>
+                            </c:when>
+                            <c:when test="${finish_agent eq 'eo'}">
+                                <s:message code="esop_createcafinish_export_content_seller"/>
+                            </c:when>
+                            <c:otherwise>
+                                <s:message code="esop_createcafinish_export_content_buyer"/>
+                            </c:otherwise>
+                        </c:choose>
                     </span>
                 </div>
             </div>
         </div>
+
     </div>
 
     <tiles:insertDefinition name="footerButtons">

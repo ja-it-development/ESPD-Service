@@ -295,9 +295,11 @@ request.setAttribute("qualityAssuranceListEO", CriteriaTemplates.qualityAssuranc
 	<%-- PROCEDURE --%>
 	
 	<c:set var="show_part_II" value="${true}" scope="request"/>
+    <c:set var="show_part_II_addRemoveButtons" value="${false}" scope="request"/>
 	<%@ include file="/WEB-INF/views/wizard/procedureForm.jsp" %>
  
 	<%-- EXCLUSION --%>
+    <c:set var="show_part_III_addRemoveButtons" value="${false}" scope="request"/>
     <div class="panel-default">
 
         <div>
@@ -426,12 +428,13 @@ request.setAttribute("qualityAssuranceListEO", CriteriaTemplates.qualityAssuranc
     </c:set>
     
 	${htmlToPrint}
-    
+
     <input type="hidden" name="html" value="${fn:escapeXml(htmlToPrint)}" />
 	<tiles:insertDefinition name="footerButtons">
 		<tiles:putAttribute name="nextCode" value="export"/>
 		<tiles:putAttribute name="prev" value="finish"/>
 		<tiles:putAttribute name="next" value="download"/>
+        <tiles:putAttribute name="agent" value="${agent}"/>
 	</tiles:insertDefinition>
 
 	</div>

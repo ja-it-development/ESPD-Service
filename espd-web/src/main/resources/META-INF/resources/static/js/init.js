@@ -130,8 +130,10 @@ function EcertisHandler(url, country) {
 	
 								//Currently display only first LegislationReference from array, in future could be more
 								item.find("#title").html(val.LegislationReference[0].Title.value);
-								item.find("#url").text(val.LegislationReference[0].Article.value).attr("href", val.LegislationReference[0].URI);
-								item.find("#description").html(val.Description.value);
+                                var legislationReferenceURI = val.LegislationReference[0].URI;
+                                var normalized_legislationReferenceURI = !legislationReferenceURI || /^(https?:)?\/\//i.test(legislationReferenceURI) ? legislationReferenceURI : 'http://' + legislationReferenceURI;
+								item.find("#url").text(val.LegislationReference[0].Article.value).attr("href", normalized_legislationReferenceURI);
+								item.find("#description").html(!!val.Description && !!val.Description.value ? val.Description.value : '');
 	
 								var hasEvidences = false;
 								$.each( $(val.RequirementGroup), function( key, val ) {

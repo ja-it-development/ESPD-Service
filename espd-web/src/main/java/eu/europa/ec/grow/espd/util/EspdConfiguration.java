@@ -59,7 +59,7 @@ public class EspdConfiguration {
     @Value("${piwik.server:https://webanalytics.ec.europa.eu/piwik.php}")
     private String piwikServer;
 
-    @Value("${ecertis.criterion.url:https://www.development.ec.europa.eu/growth/tools-databases/ecertisrest/criteria/espd/[uuid]/?countryFilter=[country]&lang=[lang]}")
+    @Value("${ecertis.criterion.url:https://ec.europa.eu/growth/tools-databases/ecertisrest/criteria/espd/[uuid]/?countryFilter=[country]&lang=[lang]}")
     private String ecertisCriterionURL;
 
     @Value("${espd.environment:false}")

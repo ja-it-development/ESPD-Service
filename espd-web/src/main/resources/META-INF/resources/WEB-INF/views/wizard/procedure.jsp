@@ -92,6 +92,7 @@
         %>
 
 		<c:set var="show_part_II" value="${agent == 'eo'}" scope="request"/>
+        <c:set var="show_part_II_addRemoveButtons" value="${true}" scope="request"/>
 		<%@ include file="/WEB-INF/views/wizard/procedureForm.jsp" %>
 
     </div>
@@ -99,5 +100,6 @@
     <tiles:insertDefinition name="footerButtons">
         <tiles:putAttribute name="prev" value="/filter"/>
         <tiles:putAttribute name="next" value="exclusion"/>
+        <tiles:putAttribute name="procedure" value="true"/>
     </tiles:insertDefinition>
 </form:form>

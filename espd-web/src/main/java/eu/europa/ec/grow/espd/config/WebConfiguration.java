@@ -24,6 +24,7 @@
 
 package eu.europa.ec.grow.espd.config;
 
+import eu.europa.ec.grow.espd.interceptor.PermissionManager;
 import net.bull.javamelody.MonitoringFilter;
 import net.bull.javamelody.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,8 +89,14 @@ class WebConfiguration extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+    @Bean
+    PermissionManager getPermissionManager() {
+        return new PermissionManager();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(getPermissionManager()).addPathPatterns("/**").excludePathPatterns("/init").excludePathPatterns("/esop/return/*");
         registry.addInterceptor(localeChangeInterceptor());
     }
 

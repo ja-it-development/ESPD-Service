@@ -53,12 +53,7 @@
 
 <div class="panel panel-default no-border hidden-print">
     <ul class="nav nav-pills nav-wizard nav-justified">
-        <li class="${(start||procedure||exclusion||selection||finish)?'active':''}">
-            <a href="#"><i class="fa fa-random"></i>&nbsp;${span18n['progress_start']}</a>
-            <div class="nav-arrow"></div>
-        </li>
         <li class="${(procedure||exclusion||selection||finish)?'active':''}">
-            <div class="nav-wedge"></div>
             <a class="${procedureLink=='#'?'':'progress-link'}" href="${procedureLink}"><i class="fa fa-university"></i>&nbsp;${span18n['progress_procedure']}</a>
             <div class="nav-arrow"></div>
         </li>

@@ -10,66 +10,112 @@
 
 	show_part_II - Boolean value to display or hide Part II (Information about EO)
 --%>
-
-<script>
-    $(function () {
-        $('#procedureTedReceptionId').keyup(function () {
-            if (!$(this).val()) {
-                $('#ojsNumber').val("");
-                $('#tedUrlLink').attr("href", "");
-                $('#tedUrlLink').text("");
-            }
+<c:if test="${empty sessionScope.ESOP_VISITORID}">
+    <script>
+        $(function () {
+            $('#procedureTedReceptionId').keyup(function () {
+                if (!$(this).val()) {
+                    $('#ojsNumber').val("");
+                    $('#tedUrlLink').attr("href", "");
+                    $('#tedUrlLink').text("");
+                }
+            });
         });
-    });
-</script>
+    </script>
+</c:if>
 
 <div>
     <h2>${span18n['createca_header']}</h2>
 </div>
-<div class="panel panel-espd">
-    <div class="panel-heading" data-toggle="collapse" data-target="#ojsdiv">
-        <h4 class="panel-title">${span18n['createca_info_pub']}</h4>
-    </div>
-    <div id="ojsdiv" class="panel-body collapse in">
-        <div class="alert alert-espd-info-dotted">
-            ${div18n['createca_to_be_filled_alert']}
-            <c:if test="${agent eq 'ca'}">
-                <div class="form-group">
-                    <label class="control-label col-md-4">${span18n['createca_ted_reception_id']}</label>
-                    <div class="col-md-8">
-                        <form:input path="tedReceptionId" id="procedureTedReceptionId" cssClass="form-control small"
-                                    data-i18n="filter_ted_reception_id_placeholder"
-                                    placeholder="${i18n['filter_ted_reception_id_placeholder']}"/>
+
+<c:choose>
+    <c:when test="${empty sessionScope.ESOP_VISITORID}">
+
+        <div class="panel panel-espd">
+            <div class="panel-heading" data-toggle="collapse" data-target="#ojsdiv">
+                <h4 class="panel-title">${span18n['createca_info_pub']}</h4>
+            </div>
+            <div id="ojsdiv" class="panel-body collapse in">
+                <div class="alert alert-espd-info-dotted">
+                        ${div18n['createca_to_be_filled_alert']}
+                    <c:if test="${agent eq 'ca'}">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">${span18n['createca_ted_reception_id']}</label>
+                            <div class="col-md-8">
+                                <form:input path="tedReceptionId" id="procedureTedReceptionId" cssClass="form-control small"
+                                            data-i18n="filter_ted_reception_id_placeholder"
+                                            placeholder="${i18n['filter_ted_reception_id_placeholder']}"/>
+                            </div>
+                        </div>
+                    </c:if>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">${span18n['createca_ojs_label']}</label>
+                        <div class="col-md-8">
+                            <form:input cssClass="form-control" path="ojsNumber" id="ojsNumber"
+                                        placeholder="[ ][ ][ ][ ]/S [ ][ ][ ]–[ ][ ][ ][ ][ ][ ]"/>
+                        </div>
                     </div>
-                </div>
-            </c:if>
-            
-            <div class="form-group">
-                <label class="control-label col-md-4">${span18n['createca_ojs_label']}</label>
-                <div class="col-md-8">
-                    <form:input cssClass="form-control" path="ojsNumber" id="ojsNumber"
-                                placeholder="[ ][ ][ ][ ]/S [ ][ ][ ]–[ ][ ][ ][ ][ ][ ]"/>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="control-label col-md-4">${span18n['createca_ojs_url']}</label>
-                <div class="col-md-8">
-                    <a href="${espd.tedUrl}" target="_blank" class="btn btn-link" id="tedUrlLink">${espd.tedUrl}</a>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="control-label col-md-4">${span18n['createca_ngoj_label']}</label>
-                <div class="col-md-8">
-                    <form:input cssClass="form-control" path="ngojNumber" id="ngojNumber"
-                                placeholder="${i18n['ngoj_placeholder']}"/>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">${span18n['createca_ojs_url']}</label>
+                        <div class="col-md-8">
+                            <a href="${espd.tedUrl}" target="_blank" class="btn btn-link" id="tedUrlLink">${espd.tedUrl}</a>xxxxx
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">${span18n['createca_ngoj_label']}</label>
+                        <div class="col-md-8">
+                            <form:input cssClass="form-control" path="ngojNumber" id="ngojNumber"
+                                        placeholder="${i18n['ngoj_placeholder']}"/>
+                        </div>
+                    </div>
+                        ${span18n['createca_official_journal_alert']}
                 </div>
             </div>
-            ${span18n['createca_official_journal_alert']}
         </div>
-    </div>
-</div>
+
+    </c:when>
+    <c:otherwise>
+
+        <div class="panel panel-espd">
+            <div class="panel-heading" data-toggle="collapse" data-target="#ojsdiv">
+                <h4 class="panel-title">${span18n['createca_info_pub']}</h4>
+            </div>
+            <div id="ojsdiv" class="panel-body collapse in">
+                <div class="alert alert-espd-info-dotted">
+
+                    ${div18n['espd_createca_to_be_filled_alert']}
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">${span18n['createca_ojs_label']}</label>
+                        <div class="col-md-8">
+                            <form:input cssClass="form-control" path="ojsNumber" id="ojsNumber"
+                                        placeholder="[ ][ ][ ][ ]/S [ ][ ][ ]–[ ][ ][ ][ ][ ][ ]"/>
+                        </div>
+                    </div>
+
+                    ${span18n['createca_official_journal_alert']}
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">${span18n['createca_ngoj_label']}</label>
+                        <div class="col-md-8">
+                            <form:input cssClass="form-control" path="ngojNumber" id="ngojNumber"
+                                        placeholder="${i18n['ngoj_placeholder']}"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </c:otherwise>
+</c:choose>
+
+
+
+
 <div class="panel panel-espd">
     <div class="panel-heading" data-toggle="collapse" data-target="#cadiv">
         <h4 class="panel-title">${span18n['createca_contact_details_ca']}</h4>
@@ -107,21 +153,23 @@
     </div>
 
     <div id="ppdiv" class="panel-body collapse in">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label col-md-4">${span18n['type_of_procedure']}</label>
-                <div class="col-md-8">
-                    <form:select path="procedureType" cssClass="form-control">
-					    <form:option value="" label="${i18n['type_of_procedure_none']}" data-i18n="type_of_procedure_none"/>
-					    <form:option value="1" label="${i18n['type_of_procedure_open']}" data-i18n="type_of_procedure_open"/>
-					    <form:option value="2" label="${i18n['type_of_procedure_resticted']}" data-i18n="type_of_procedure_resticted"/>
-					    <form:option value="10" label="${i18n['type_of_procedure_negotiation']}" data-i18n="type_of_procedure_negotiation"/>
-					    <form:option value="C" label="${i18n['type_of_procedure_dialogue']}" data-i18n="type_of_procedure_dialogue"/>
-					    <form:option value="11" label="${i18n['type_of_procedure_partnership']}" data-i18n="type_of_procedure_partnership"/>
-					</form:select>
+        <c:if test="${empty sessionScope.ESOP_VISITORID}">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label col-md-4">${span18n['type_of_procedure']}</label>
+                    <div class="col-md-8">
+                        <form:select path="procedureType" cssClass="form-control">
+                            <form:option value="" label="${i18n['type_of_procedure_none']}" data-i18n="type_of_procedure_none"/>
+                            <form:option value="1" label="${i18n['type_of_procedure_open']}" data-i18n="type_of_procedure_open"/>
+                            <form:option value="2" label="${i18n['type_of_procedure_resticted']}" data-i18n="type_of_procedure_resticted"/>
+                            <form:option value="10" label="${i18n['type_of_procedure_negotiation']}" data-i18n="type_of_procedure_negotiation"/>
+                            <form:option value="C" label="${i18n['type_of_procedure_dialogue']}" data-i18n="type_of_procedure_dialogue"/>
+                            <form:option value="11" label="${i18n['type_of_procedure_partnership']}" data-i18n="type_of_procedure_partnership"/>
+                        </form:select>
+                    </div>
                 </div>
             </div>
-        </div>
+        </c:if>
         <div class="col-md-12">
             <div class="form-group">
                 <label class="control-label col-md-4">${span18n['createca_procurer_name']}</label>
@@ -404,16 +452,18 @@
                 <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
                         ${span18n['createeo_info_respresent']} ${'#'}${vs.index+1}
                 </h4>
-                <div class="btn-group pull-right hidden-print">
-                    <button id="addRepresentative" type="submit" class="btn btn-default btn-sm" name="add"
-                            value="${vs.index + 1}" data-toggle="tooltip" title="Add">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                    </button>
-                    <button id="removeRepresentative" type="submit" class="btn btn-default btn-sm " name="remove"
-                            value="${vs.index}" data-toggle="tooltip" title="Delete">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </button>
-                </div>
+                <c:if test="${show_part_II_addRemoveButtons}">
+                    <div class="btn-group pull-right hidden-print">
+                        <button id="addRepresentative" type="submit" class="btn btn-default btn-sm" name="add"
+                                value="${vs.index + 1}" data-toggle="tooltip" title="Add">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                        <button id="removeRepresentative" type="submit" class="btn btn-default btn-sm " name="remove"
+                                value="${vs.index}" data-toggle="tooltip" title="Delete">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </c:if>
             </div>
             <div id="createeo_info_respresent_div${vs.index}" class="collapse in">
                 <div class="panel-body">

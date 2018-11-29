@@ -480,3 +480,31 @@ a.splashLangBox {
     border-radius:5px;
     box-shadow: 0px 0px 10px #000;
 }
+
+/* ESOP */
+
+.ESOP .form-group {
+    margin-top: 15px;
+}
+
+@media (min-width: 768px) {
+    .ESOP .form-horizontal .control-label {
+        margin-bottom: 0;
+        text-align: right;
+    }
+}
+
+
+.ESOP textarea.form-control {
+    paddimg: 6px 12px;
+    height: 34px;
+}
+
+.ESOP .form-horizontal .control-label {
+    padding: 6px 12px;
+}
+
+.ESOP .col-md-8 > span  {
+    padding-top: 5px;
+    position: absolute;
+}

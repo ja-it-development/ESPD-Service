@@ -8,13 +8,15 @@
 	request.setAttribute("div18n", inst.div());
 	request.setAttribute("span18n", inst.span());
 %>
-		
+
+<c:set var="ESOP_SESSION" value="${not empty sessionScope.ESOP_VISITORID}"/>
+
 <!DOCTYPE html>
 
 <tiles:importAttribute name="agent"/>
 <tiles:importAttribute name="flow"/>
 
-<html>
+<html <c:if test="${ESOP_SESSION}">class="ESOP"</c:if>>
     <head>
 		<meta charset="UTF-8"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -67,8 +69,11 @@
 
 				var ecertisHandler = EcertisHandler("${ecertisCriterionURL}", "${agent == 'eo' ? espd.economicOperator.country.iso2Code : espd.authority.country.iso2Code}")
 				$('.ecertis-link').click(ecertisHandler);
-			
-				$("#espd-popup").delay(3600000).show(0);
+
+				<c:if test="${not ESOP_SESSION}">
+					$("#espd-popup").delay(3600000).show(0);
+				</c:if>
+
 				$("#espd-popup-close").click(function(){$("#espd-popup").hide()})
 			});
 		</script>

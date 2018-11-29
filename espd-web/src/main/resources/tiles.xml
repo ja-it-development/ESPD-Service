@@ -256,6 +256,8 @@
         <put-attribute name="prev" value=""/>
         <put-attribute name="next" value=""/>
         <put-attribute name="overview" value="false"/>
+        <put-attribute name="procedure" value="false"/>
+        <put-attribute name="agent" value=""/>
     </definition>
 
     <!-- ~ common-->

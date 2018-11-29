@@ -80,7 +80,9 @@ class ApacheFopConfig {
 			FopFactoryBuilder fopFactoryBuilder = new FopFactoryBuilder(
 					defaultBaseURI, new EspdResourceResolver(resourceLoader))
 					.setConfiguration(cfg);
-			return fopFactoryBuilder.build();
+			FopFactory fopFactory = fopFactoryBuilder.build();
+			fopFactory.getFontManager().disableFontCache();
+			return fopFactory;
 		} catch (SAXException | IOException | ConfigurationException e) {
 			throw new IllegalArgumentException(e);
 		}

@@ -27,7 +27,7 @@
     <div class="span9">
         <div>
             <!-- The model values come from org.springframework.boot.autoconfigure.web.BasicErrorController -->
-            <h2 class="text-center alert alert-danger"><c:out value="${error}  (${status})"/></h2>
+            <h2 class="text-center alert alert-danger"><c:out value="${error}"/><c:if test="${not empty status}"><c:out value="  (${status})"/></c:if></h2>
             <h5 class="alert alert-info">
                 <c:out value="${message}"/>
             </h5>
