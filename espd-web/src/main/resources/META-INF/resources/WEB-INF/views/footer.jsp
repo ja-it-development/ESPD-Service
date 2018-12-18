@@ -26,6 +26,9 @@
   ~ permissions and limitations under the Licence.
   ~
   --%>
+
+<c:set var="ESOP_SESSION" value="${not empty sessionScope.ESOP_VISITORID}"/>
+
 <s:eval var="lastBuildDate" scope="page" expression='@espdConfiguration.lastBuildDate' />
 <footer style="color: black" class="hidden-print container-fluid">
 	<div class="row">
@@ -34,6 +37,70 @@
 			<span><c:out value="${lastBuildDate}"/></span>
 		</div>
 	</div>
+
+    <c:if test="${ESOP_SESSION}">
+
+        <style>
+            #esop-popup-licence {
+                width: 100%;
+                min-height: 100%;
+                /*background-color: rgba(0,0,0,0.5);*/
+                overflow: hidden;
+                position: fixed;
+                top: 0px;
+                z-index: 1000;
+            }
+            #esop-popup-licence-content {
+                margin: 120px auto 0px auto;
+                width: 300px;
+                padding: 10px;
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 0px 0px 10px #000;
+            }
+            #esop-popup-licence-content p {
+                text-align: center;
+            }
+
+            #esop-popup-licence-close {
+                text-decoration: none;
+            }
+
+            #esop-licence-link {
+                position: absolute;
+                right: 20%;
+                text-decoration: underline;
+                font-size: 12px;
+                cursor: pointer;
+            }
+
+        </style>
+
+        <div id="esop-popup-licence" style="display: none;">
+            <div id="esop-popup-licence-content">
+                <span class="licence-text"></span>
+                <p><a id="esop-popup-licence-close" data-i18n="ok" style="cursor:pointer;">${i18n['ok']}</a></p>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                $('#esop-popup-licence-content .licence-text').load('/esop/guest/espd/html/espd_legal_disclaimer.htm' , function(responseTxt, statusTxt, xhr) {
+                        if(statusTxt == "success") {
+                            $('#esop-popup-licence').prependTo($('body'));
+                            $('footer .row').append('<div id="esop-licence-link">Legal information</div>');
+                            $('#esop-popup-licence-close').click(function(){$('#esop-popup-licence').hide()});
+                            $('#esop-licence-link').click(function(){$('#esop-popup-licence').show()});
+                        } else {
+                            window.console && console.warn('No legal disclaimer available.');
+                        }
+                    }
+                );
+            });
+        </script>
+
+    </c:if>
+
 </footer>
 <s:eval var="piwikEnabled" scope="page" expression='@espdConfiguration.piwikEnabled' />
 <s:eval var="piwikServer" scope="page" expression='@espdConfiguration.piwikServer' />
