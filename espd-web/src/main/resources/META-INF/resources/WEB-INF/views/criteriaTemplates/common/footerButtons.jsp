@@ -49,6 +49,34 @@
 
                 <c:when test="${(next == 'download') and ESOP_READONLY}"><%-- special case, overview page in R/O linked from ESOP --%>
 
+                    <div class="btn-group dropup" role="group" aria-label="Download">
+                        <button type="submit" class="btn btn-default btn-lg dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" name="download" value="xml">
+                            <span data-i18n="download_as"><s:message code="download_as" text="Download as"/></span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <button id="downloadXmlButton" type="submit" class="btn btn-default" name="download" value="xml">
+                                    <i class="fa fa-file-pdf-o"></i><span data-i18n="download_pdf"><s:message
+                                        code="download_xml" text="XML"/></span>
+                                </button>
+                            </li>
+                            <li>
+                                <button id="downloadPdfButton" type="submit" class="btn btn-default" name="download" value="pdf">
+                                    <i class="fa fa-file-pdf-o"></i><span data-i18n="download_pdf"><s:message
+                                        code="download_pdf" text="PDF"/></span>
+                                </button>
+                            </li>
+                            <li>
+                                <button id="downloadZipButton" type="submit" class="btn btn-default" name="download" value="zip">
+                                    <i class="fa fa-file-zip-o"></i><span data-i18n="download_zip"><s:message
+                                        code="download_zip" text="ZIP"/></span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div class="btn-group" role="group">
                         <a id="cancelBtn" class="btn btn-default btn-lg" href="${pageContext.request.contextPath}/esop/return/exit"
                            role="button">
