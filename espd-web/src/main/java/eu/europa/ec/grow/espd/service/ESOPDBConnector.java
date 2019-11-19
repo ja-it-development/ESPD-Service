@@ -206,24 +206,27 @@ public class ESOPDBConnector {
 	}
 
 	private void closeDBOperation(Connection conn, PreparedStatement stm, ResultSet rs) {
-		if (conn != null)
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		if (rs != null)
+		if (rs != null) {
 			try {
 				rs.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		if (stm != null)
+		}
+		if (stm != null) {
 			try {
 				stm.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 
