@@ -11,6 +11,9 @@
 			<!-- ESOP version 21+ -->
 			<module name="org.springframework" slot="5.2.11.RELEASE"/>
 			<module name="org.springframework.security" slot="5.2.7.RELEASE"/>
+			<!-- ESOP version 22+ -->
+			<module name="org.springframework" slot="5.2.20.RELEASE"/>
+			<module name="org.springframework.security" slot="5.2.15.RELEASE"/>
 		</exclusions>
 	</deployment>
 </jboss-deployment-structure>
