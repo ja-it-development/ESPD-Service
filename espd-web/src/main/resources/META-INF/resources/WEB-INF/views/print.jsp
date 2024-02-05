@@ -44,8 +44,7 @@ request.setAttribute("qualityAssuranceListEO", CriteriaTemplates.qualityAssuranc
     $(function () {
 		$('.ecertis-link').remove(); 
 		$('.ecertis-info').remove(); 
-		
-        $("#ojsNumber").inputmask("9999/S 999-9999999");
+
         <c:if test="${agent == 'ca'}">
             // CA only needs to see the labels but not the values
             $(":radio").attr('checked', false);

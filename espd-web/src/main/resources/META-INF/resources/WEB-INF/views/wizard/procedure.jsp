@@ -46,7 +46,6 @@
                 $element.parent().append($error);
             }
         });
-        $("#ojsNumber").inputmask("9999/S 999-999999");
 
         // eo registered answer and not applicable are mutually exclusive
         $("#eo_registered_answer_yes").click(function () {

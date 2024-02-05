@@ -52,15 +52,14 @@
                     <div class="form-group">
                         <label class="control-label col-md-4">${span18n['createca_ojs_label']}</label>
                         <div class="col-md-8">
-                            <form:input cssClass="form-control" path="ojsNumber" id="ojsNumber"
-                                        placeholder="[ ][ ][ ][ ]/S [ ][ ][ ]–[ ][ ][ ][ ][ ][ ]"/>
+                            <form:input cssClass="form-control" path="ojsNumber" id="ojsNumber"/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-4">${span18n['createca_ojs_url']}</label>
                         <div class="col-md-8">
-                            <a href="${espd.tedUrl}" target="_blank" class="btn btn-link" id="tedUrlLink">${espd.tedUrl}</a>xxxxx
+                            <a href="${espd.tedUrl}" target="_blank" class="btn btn-link" id="tedUrlLink">${espd.tedUrl}</a>
                         </div>
                     </div>
 
@@ -91,8 +90,7 @@
                     <div class="form-group">
                         <label class="control-label col-md-4">${span18n['createca_ojs_label']}</label>
                         <div class="col-md-8">
-                            <form:input cssClass="form-control" path="ojsNumber" id="ojsNumber"
-                                        placeholder="[ ][ ][ ][ ]/S [ ][ ][ ]–[ ][ ][ ][ ][ ][ ]"/>
+                            <form:input cssClass="form-control" path="ojsNumber" id="ojsNumber"/>
                         </div>
                     </div>
 

@@ -29,6 +29,7 @@ package eu.europa.ec.grow.espd.xml.common;
  */
 public final class MarshallingConstants {
 
+	// OJS_NUMBER is now a free text field. Probably this constant is no longer necessary but, in doubt, ....
     public static final String TEMPORARY_OJS_NUMBER = "0000/S 000-000000";
     public static final String TEMPORARY_OJS_NUMBER_SCHEME_ID = "COM-GROW-TEMPORARY-ID";
     
