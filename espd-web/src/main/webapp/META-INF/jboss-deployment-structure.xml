@@ -17,6 +17,11 @@
 			<!-- ESOP version 23.2+ -->
 			<module name="org.springframework" slot="5.3.27"/>
 			<module name="org.springframework.security" slot="5.8.2"/>
+			<!-- ESOP version 24.3+ - Due to new version of Wildfly 26-->
+			<module name="org.slf4j.impl" />
+			<!-- ESOP version 24.3+ -->
+			<module name="org.springframework" slot="5.3.37"/>
+			<module name="org.springframework.security" slot="5.8.13"/>
 		</exclusions>
 	</deployment>
 </jboss-deployment-structure>
