@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +27,9 @@ import java.sql.SQLException;
 public class ESOPDBConnector {
 
 	private static final String DATASOURCE_JNDI_NAME = "com/bs/esop/ds/DataSource";
+	private static final String PG_DATASOURCE_JNDI_NAME = "com/bs/esop/ds/PGDataSource";
+
+	private static boolean IS_POSTGRESQL_CONNECTION;
 
 	private static final String TABLE_NAME = "T_MDL_ESPD_INTEGRATION";
 
@@ -36,6 +40,24 @@ public class ESOPDBConnector {
 	private static final String RETURN_URL_QUERY = "select RETURN_URL from " + TABLE_NAME + " where VISITOR_ID = ?";
 	private static final String REQUEST_XML_UPDATE_QUERY = "update " + TABLE_NAME + " set ESPD_FILE_REQUEST = ? where VISITOR_ID = ?";
 	private static final String RESPONSE_XML_UPDATE_QUERY = "update " + TABLE_NAME + " set ESPD_FILE_RESPONSE = ? where VISITOR_ID = ?";
+
+	private static final String PG = "PG";
+
+	static {
+		// Determine database type once
+		boolean isPostgres = PG.equals(System.getProperty("esop.database.type"));
+
+		IS_POSTGRESQL_CONNECTION = isPostgres;
+	}
+
+	/**
+	 * Utility to verify the database type in use.
+	 *
+	 * @return true if database in use is PostgreSQL
+	 */
+	public static boolean isPG() {
+		return IS_POSTGRESQL_CONNECTION;
+	}
 
 	public Visitor getVisitor(String visitorId) throws SQLException {
 		DataSource ds = getDataSource();
@@ -100,6 +122,10 @@ public class ESOPDBConnector {
 				stm.setString(1, visitorId);
 				rs = stm.executeQuery();
 				if (rs.next()) {
+					if (isPG()) {
+						String xml = rs.getString("ESPD_FILE_REQUEST");
+						return xml == null ? null : new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+					}
 					Clob xmlClob = rs.getClob("ESPD_FILE_REQUEST");
 					return new ReaderInputStream(xmlClob.getCharacterStream(), "UTF-8");
 				}
@@ -126,11 +152,18 @@ public class ESOPDBConnector {
 				stm.setString(1, visitorId);
 				rs = stm.executeQuery();
 				if (rs.next()) {
-					Clob reqXmlClob = rs.getClob("ESPD_FILE_REQUEST");
-					Clob respXmlClob = rs.getClob("ESPD_FILE_RESPONSE");
 					InputStream [] XMLs = new InputStream[2];
-					XMLs[0] = new ReaderInputStream(reqXmlClob.getCharacterStream(), "UTF-8");
-					XMLs[1] = new ReaderInputStream(respXmlClob.getCharacterStream(), "UTF-8");
+					if (isPG()) {
+						String reqXml = rs.getString("ESPD_FILE_REQUEST");
+						String respXml = rs.getString("ESPD_FILE_RESPONSE");
+						XMLs[0] = reqXml == null ? null : new ByteArrayInputStream(reqXml.getBytes(StandardCharsets.UTF_8));
+						XMLs[1] = respXml == null ? null : new ByteArrayInputStream(respXml.getBytes(StandardCharsets.UTF_8));
+					} else {
+						Clob reqXmlClob = rs.getClob("ESPD_FILE_REQUEST");
+						Clob respXmlClob = rs.getClob("ESPD_FILE_RESPONSE");
+						XMLs[0] = new ReaderInputStream(reqXmlClob.getCharacterStream(), "UTF-8");
+						XMLs[1] = new ReaderInputStream(respXmlClob.getCharacterStream(), "UTF-8");
+					}
 					return XMLs;
 				}
 			} finally {
@@ -173,10 +206,13 @@ public class ESOPDBConnector {
 			try {
 				conn = ds.getConnection();
 				stm = conn.prepareStatement(isCA ? REQUEST_XML_UPDATE_QUERY : RESPONSE_XML_UPDATE_QUERY);
-				InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(XmlDocUTF8), "UTF-8");
-				stm.setClob(1, is);
+				if (isPG()) {
+					stm.setString(1, new String(XmlDocUTF8, StandardCharsets.UTF_8));
+				} else {
+					InputStreamReader is = new InputStreamReader(new ByteArrayInputStream(XmlDocUTF8), "UTF-8");
+					stm.setClob(1, is);
+				}
 				stm.setString(2, visitorId);
-				rs = stm.executeQuery();
 				int updates = stm.executeUpdate();
 				if (updates == 1) {
 					//...
@@ -197,7 +233,7 @@ public class ESOPDBConnector {
 		DataSource dataSource = null;
 		try {
 			Context context = new InitialContext();
-			dataSource = (javax.sql.DataSource) context.lookup(DATASOURCE_JNDI_NAME);
+			dataSource = (javax.sql.DataSource) context.lookup(isPG() ? PG_DATASOURCE_JNDI_NAME : DATASOURCE_JNDI_NAME);
 		} catch (NamingException e) {
 			log.error("Unable to connect to DB", e);
 			throw new SQLException(e);
