@@ -41,7 +41,8 @@ import eu.europa.ec.grow.espd.xml.response.exporting.UblResponseCriteriaTransfor
 import eu.europa.ec.grow.espd.xml.response.exporting.UblResponseTypeTransformer
 import eu.europa.ec.grow.espd.xml.response.importing.UblRequestResponseMerger
 import eu.europa.ec.grow.espd.xml.response.importing.UblResponseImporter
-import groovy.util.slurpersupport.GPathResult
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.GPathResult
 import org.springframework.oxm.jaxb.Jaxb2Marshaller
 import spock.lang.Shared
 import spock.lang.Specification

@@ -29,7 +29,7 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.jsp.PageContext;
 import java.util.HashMap;
 import java.util.Locale;
 

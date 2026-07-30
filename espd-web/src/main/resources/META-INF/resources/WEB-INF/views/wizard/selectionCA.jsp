@@ -115,7 +115,7 @@
 	}
 %>
 
-<form:form id="espdform" role="form" class="form-horizontal" method="post" commandName="espd" data-toggle="validator" autocomplete="off">
+<form:form id="espdform" role="form" class="form-horizontal" method="post" modelAttribute="espd" data-toggle="validator" autocomplete="off">
 	<tiles:insertDefinition name="viewChangeRole">
         <tiles:putAttribute name="agent" value="ca"/>
         <tiles:putAttribute name="page" value="${flow}/eo/selection"/>

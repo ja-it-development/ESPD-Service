@@ -40,10 +40,32 @@
             <groupId>eu.europa.ec.grow.espd</groupId>
             <artifactId>exchange-model</artifactId>
             <version>${espd-exchange-model.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jvnet.jaxb2_commons</groupId>
+                    <artifactId>jaxb2-basics-runtime</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jvnet.jaxb</groupId>
+            <artifactId>jaxb2-basics-runtime</artifactId>
+            <version>2.0.16-jakarta</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -58,11 +80,15 @@
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.tiles</groupId>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tntim96.apache.tiles</groupId>
             <artifactId>tiles-jsp</artifactId>
         </dependency>
         <dependency>
@@ -92,12 +118,12 @@
         </dependency>
         <dependency>
             <groupId>net.bull.javamelody</groupId>
-            <artifactId>javamelody-core</artifactId>
+            <artifactId>javamelody-spring-boot4-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>eu.michael-simons</groupId>
             <artifactId>wro4j-spring-boot-starter</artifactId>
-            <version>0.0.8</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.opencsv</groupId>
@@ -115,6 +141,24 @@
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
     <build>
@@ -134,27 +178,28 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
                     <nonFilteredFileExtensions>
-                        <!-- To avoid the corruption of fonts when building the WAR file -->
+                        <!-- To avoid the corruption of binary files when building the WAR file -->
+                        <nonFilteredFileExtension>eot</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>gif</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>jpeg</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>jpg</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>otf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pdf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>png</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>svg</nonFilteredFileExtension>
                         <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>1.2</version>
                 <executions>
                     <execution>
                         <id>enforce-banned-dependencies</id>
@@ -167,14 +212,12 @@
                                     <searchTransitive>true</searchTransitive>
                                     <excludes>
                                         <exclude>javassist:javassist</exclude>
-                                        <exclude>commons-logging</exclude>
                                         <exclude>aspectj:aspectj*</exclude>
                                         <exclude>hsqldb:hsqldb</exclude>
                                         <exclude>log4j:log4j</exclude>
                                         <exclude>org.slf4j:1.5*</exclude>
                                         <exclude>org.springframework:2.*</exclude>
                                         <exclude>org.springframework:3.*</exclude>
-                                        <exclude>com.sun.xml.bind:jaxb-impl</exclude>
                                     </excludes>
                                     <includes>
                                         <!-- These libs are needed by the Geb functional tests -->
@@ -183,10 +226,10 @@
                                     </includes>
                                 </bannedDependencies>
                                 <requireMavenVersion>
-                                    <version>[3.0.3,3.8.6]</version>
+                                    <version>[3.9,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>${java.version}</version>
+                                    <version>[17,)</version>
                                 </requireJavaVersion>
                             </rules>
                             <fail>true</fail>
@@ -218,12 +261,11 @@
                 visit https://github.com/groovy/GMavenPlus/wiki -->
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.5</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>compile</goal>
-                            <goal>testCompile</goal>
+                            <goal>compileTests</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -237,6 +279,7 @@
                     <includes>
                         <include>**/*Spec.java</include>
                         <include>**/*Test.java</include>
+                        <include>**/*Spec.groovy</include>
                     </includes>
                     <argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
                 </configuration>
@@ -306,7 +349,7 @@
                                         </versionRange>
                                         <goals>
                                             <goal>compile</goal>
-                                            <goal>testCompile</goal>
+                                            <goal>compileTests</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>

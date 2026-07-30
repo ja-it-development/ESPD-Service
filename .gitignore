@@ -103,6 +103,7 @@ buildNumber.properties
 
 # Package Files #
 *.jar
+!espd-libs/libs/*.jar
 /espd.iml
 /.idea
 /espd-docs/espd-docs.iml

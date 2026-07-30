@@ -143,7 +143,7 @@
 </script>
 <s:eval var="espdEnvironment" scope="page" expression="@espdConfiguration.espdEnvironment"/>
 <form:form id="espdFilterForm" role="form" class="form-horizontal" action="filter" method="post"
-           commandName="espdFilterParams" data-toggle="validator" enctype="multipart/form-data">
+           modelAttribute="espdFilterParams" data-toggle="validator" enctype="multipart/form-data">
     <div class="panel-default">
         <tiles:insertDefinition name="progress">
             <tiles:putAttribute name="agent" value="unknown"/>

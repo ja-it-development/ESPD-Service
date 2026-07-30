@@ -56,10 +56,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -744,7 +744,7 @@ class EspdController {
 	 *
 	 * @return The name of the expired page
 	 */
-	@RequestMapping("**/null/**")
+	@RequestMapping({"/null", "/null/**", "/**/null"})
 	public String getPage() {
 		return SESSION_EXPIRED_PAGE;
 	}

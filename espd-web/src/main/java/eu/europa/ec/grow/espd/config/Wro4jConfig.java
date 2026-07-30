@@ -25,8 +25,13 @@
 package eu.europa.ec.grow.espd.config;
 
 import ac.simons.spring.boot.wro4j.Wro4jAutoConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import ro.isdc.wro.model.resource.support.ResourceAuthorizationManager;
+
+import java.util.Optional;
 
 /**
  *
@@ -38,5 +43,10 @@ import org.springframework.context.annotation.Profile;
 class Wro4jConfig extends Wro4jAutoConfiguration {
 
     // only used for development ('default' profile) when we need the Wro4J Filter
+
+    @Autowired
+    Wro4jConfig(ApplicationContext applicationContext, Optional<ResourceAuthorizationManager> resourceAuthorizationManager) {
+        super(applicationContext, resourceAuthorizationManager);
+    }
 
 }

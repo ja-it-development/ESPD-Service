@@ -2,26 +2,9 @@
 <jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.3">
 	<deployment>
 		<exclusions>
-			<!-- ESOP version 19 -->
-			<module name="org.springframework" slot="4.3.10.RELEASE"/>
-			<module name="org.springframework.security" slot="4.2.3.RELEASE"/>
-			<!-- ESOP version 20+ -->
-			<module name="org.springframework" slot="5.2.0.RELEASE"/>
-			<module name="org.springframework.security" slot="5.2.0.RELEASE"/>
-			<!-- ESOP version 21+ -->
-			<module name="org.springframework" slot="5.2.11.RELEASE"/>
-			<module name="org.springframework.security" slot="5.2.7.RELEASE"/>
-			<!-- ESOP version 22+ -->
-			<module name="org.springframework" slot="5.2.20.RELEASE"/>
-			<module name="org.springframework.security" slot="5.2.15.RELEASE"/>
-			<!-- ESOP version 23.2+ -->
-			<module name="org.springframework" slot="5.3.27"/>
-			<module name="org.springframework.security" slot="5.8.2"/>
-			<!-- ESOP version 24.3+ - Due to new version of Wildfly 26-->
-			<module name="org.slf4j.impl" />
-			<!-- ESOP version 24.3+ -->
-			<module name="org.springframework" slot="5.3.37"/>
-			<module name="org.springframework.security" slot="5.8.13"/>
+			<!-- ESOP version EE 9+ -->
+			<module name="org.springframework" slot="6.2.11"/>
+			<module name="org.springframework.security" slot="6.5.5"/>
 		</exclusions>
 	</deployment>
 </jboss-deployment-structure>

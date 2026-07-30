@@ -31,6 +31,7 @@
     <packaging>pom</packaging>
     <version>2026.07-bsp-SNAPSHOT</version>
     <modules>
+        <module>espd-libs</module>
         <module>espd-web</module>
         <module>espd-docs</module>
     </modules>
@@ -78,7 +79,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.7.RELEASE</version>
+        <version>4.1.0</version>
     </parent>
 
     <distributionManagement>
@@ -91,28 +92,26 @@
     </distributionManagement>
 
     <properties>
-        <java.version>1.7</java.version>
+        <java.version>17</java.version>
         <main.basedir>${basedir}/../..</main.basedir>
         <start-class>eu.europa.ec.grow.espd.config.EspdApplication</start-class>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
         <espd.build.timestamp>${maven.build.timestamp}</espd.build.timestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <lombok.version>1.16.6</lombok.version>
-        <tiles.version>3.0.4</tiles.version>
-        <commons-fileupload.version>1.3.1</commons-fileupload.version>
-        <commons-lang3.version>3.9</commons-lang3.version>
-        <groovy.version>2.4.1</groovy.version>
-        <spock.version>1.0-groovy-2.4</spock.version>
-        <guava.version>18.0</guava.version>
-        <joda-time.version>2.9</joda-time.version>
-        <jaxb.version>2.2.11</jaxb.version>
-        <wro4j.version>1.8.0</wro4j.version>
-        <javamelody.version>1.61.0</javamelody.version>
+        <lombok.version>1.18.36</lombok.version>
+        <tiles.version>3.1.0.0</tiles.version>
+        <commons-fileupload.version>1.5</commons-fileupload.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <groovy.version>4.0.24</groovy.version>
+        <spock.version>2.4-M7-groovy-4.0</spock.version>
+        <guava.version>33.4.0-jre</guava.version>
+        <joda-time.version>2.13.0</joda-time.version>
+        <wro4j.version>2.1.0</wro4j.version>
+        <javamelody.version>2.8.0</javamelody.version>
         <asciidoctorj.diagram.version>1.3.1</asciidoctorj.diagram.version>
         <asciidoctorj.pdf.version>1.5.0-alpha.11</asciidoctorj.pdf.version>
-        <espd-exchange-model.version>1.0.2</espd-exchange-model.version>
-        <!-- Version 1.1.7 of Logback does not work on Weblogic -->
-        <logback.version>1.1.6</logback.version>
+        <espd-exchange-model.version>1.0.2-jakarta</espd-exchange-model.version>
+        <logback.version>1.5.18</logback.version>
     </properties>
 
     <pluginRepositories>
@@ -132,7 +131,17 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.apache.tiles</groupId>
+                <groupId>jakarta.servlet.jsp.jstl</groupId>
+                <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+                <version>3.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.web</groupId>
+                <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.tntim96.apache.tiles</groupId>
                 <artifactId>tiles-jsp</artifactId>
                 <version>${tiles.version}</version>
             </dependency>
@@ -169,17 +178,9 @@
             </dependency>
             <dependency>
                 <groupId>net.bull.javamelody</groupId>
-                <artifactId>javamelody-core</artifactId>
+                <artifactId>javamelody-spring-boot4-starter</artifactId>
                 <version>${javamelody.version}</version>
             </dependency>
-            <!-- Use the Glassfish Reference Implementation to provide the correct namespaces to the XML
-            elements and to be able to compile the project without using the com.sun.xml.internal package -->
-            <dependency>
-                <groupId>org.glassfish.jaxb</groupId>
-                <artifactId>jaxb-runtime</artifactId>
-                <version>${jaxb.version}</version>
-            </dependency>
-
 
             <!-- Testing dependencies -->
             <!-- Mandatory dependencies for using Spock -->
@@ -189,23 +190,29 @@
                 <version>${spock.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-spring</artifactId>
+                <version>${spock.version}</version>
+                <scope>test</scope>
+            </dependency>
             <!-- Optional dependencies for using Spock -->
             <dependency> <!-- use a specific Groovy version rather than the one specified by spock-core -->
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-all</artifactId>
+                <groupId>org.apache.groovy</groupId>
+                <artifactId>groovy</artifactId>
                 <version>${groovy.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency> <!-- enables mocking of classes (in addition to interfaces) -->
-                <groupId>cglib</groupId>
-                <artifactId>cglib-nodep</artifactId>
-                <version>3.1</version>
+            <dependency>
+                <groupId>org.apache.groovy</groupId>
+                <artifactId>groovy-xml</artifactId>
+                <version>${groovy.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency> <!-- enables mocking of classes without default constructor (together with CGLIB) -->
-                <groupId>org.objenesis</groupId>
-                <artifactId>objenesis</artifactId>
-                <version>2.1</version>
+            <dependency>
+                <groupId>org.apache.groovy</groupId>
+                <artifactId>groovy-dateutil</artifactId>
+                <version>${groovy.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -220,22 +227,47 @@
         </dependency>
         <!-- Optional dependencies for using Spock -->
         <dependency> <!-- use a specific Groovy version rather than the one specified by spock-core -->
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy</artifactId>
         </dependency>
-        <dependency> <!-- enables mocking of classes (in addition to interfaces) -->
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-xml</artifactId>
         </dependency>
-        <dependency> <!-- enables mocking of classes without default constructor (together with CGLIB) -->
-            <groupId>org.objenesis</groupId>
-            <artifactId>objenesis</artifactId>
+        <dependency>
+            <groupId>org.apache.groovy</groupId>
+            <artifactId>groovy-dateutil</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>4.2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.5.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.4.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.5.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>ro.isdc.wro4j</groupId>
+                    <artifactId>wro4j-maven-plugin</artifactId>
+                    <version>${wro4j.version}</version>
+                </plugin>
                 <!--This plugin's configuration is used to store Eclipse m2e settings
                     only. It has no influence on the Maven build itself. -->
                 <plugin>
@@ -248,16 +280,17 @@
                                 <pluginExecution>
                                     <pluginExecutionFilter>
                                         <groupId>
-                                            org.codehaus.gmaven
+                                            org.codehaus.gmavenplus
                                         </groupId>
                                         <artifactId>
-                                            gmaven-plugin
+                                            gmavenplus-plugin
                                         </artifactId>
                                         <versionRange>
-                                            [1.0,)
+                                            [4.0,)
                                         </versionRange>
                                         <goals>
-                                            <goal>execute</goal>
+                                            <goal>compile</goal>
+                                            <goal>compileTests</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
@@ -273,10 +306,9 @@
                                             maven-compiler-plugin
                                         </artifactId>
                                         <versionRange>
-                                            [2.3.2,)
+                                            [3.11,)
                                         </versionRange>
                                         <goals>
-                                            <goal>execute</goal>
                                             <goal>compile</goal>
                                             <goal>testCompile</goal>
                                         </goals>

@@ -24,40 +24,45 @@
 
 package eu.europa.ec.grow.espd.config;
 
+import eu.europa.ec.grow.espd.config.tiles.TilesConfigurer;
+import eu.europa.ec.grow.espd.config.tiles.TilesView;
 import eu.europa.ec.grow.espd.interceptor.PermissionManager;
+import jakarta.servlet.Filter;
 import net.bull.javamelody.MonitoringFilter;
 import net.bull.javamelody.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.web.HttpEncodingProperties;
-import org.springframework.boot.web.filter.OrderedCharacterEncodingFilter;
+import org.springframework.boot.servlet.filter.OrderedCharacterEncodingFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles3.TilesView;
 
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 @Configuration
-class WebConfiguration extends WebMvcConfigurerAdapter {
+class WebConfiguration implements WebMvcConfigurer {
 
-	private final HttpEncodingProperties properties;
+    private final String encodingCharset;
+    private final boolean encodingForce;
 
-	@Autowired
-	WebConfiguration(HttpEncodingProperties properties) {
-		this.properties = properties;
-	}
+    @Autowired
+    WebConfiguration(@Value("${server.servlet.encoding.charset:UTF-8}") String encodingCharset,
+            @Value("${server.servlet.encoding.force:true}") boolean encodingForce) {
+        this.encodingCharset = encodingCharset;
+        this.encodingForce = encodingForce;
+    }
 
-	@Bean
+    @Bean
     UrlBasedViewResolver viewResolver() {
         UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
         viewResolver.setViewClass(TilesView.class);
@@ -83,8 +88,7 @@ class WebConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     LocaleResolver localeResolver() {
-        CookieLocaleResolver resolver = new CookieLocaleResolver();
-        resolver.setCookieName("ESPD_LOCALE");
+        CookieLocaleResolver resolver = new CookieLocaleResolver("ESPD_LOCALE");
         resolver.setDefaultLocale(Locale.ENGLISH);
         return resolver;
     }
@@ -119,8 +123,8 @@ class WebConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    FilterRegistrationBean melodyFilterRegistration(MonitoringFilter melodyFilter) {
-        FilterRegistrationBean frb = new FilterRegistrationBean(melodyFilter);
+    FilterRegistrationBean<Filter> melodyFilterRegistration(MonitoringFilter melodyFilter) {
+        FilterRegistrationBean<Filter> frb = new FilterRegistrationBean<>(melodyFilter);
         frb.addInitParameter(Parameter.NO_DATABASE.getCode(), "true");
         frb.addInitParameter(Parameter.ALLOWED_ADDR_PATTERN.getCode(),
                 "(158\\.16[6-8]\\..*)|(127\\.0\\.0\\.1)|(localhost)");
@@ -129,27 +133,27 @@ class WebConfiguration extends WebMvcConfigurerAdapter {
     }
 
     /*
-     * A workaround for the problem is that OrderedCharacterEncodingFilter is running after HiddenHttpMethodFilter. 
-     * HiddenHttpMethodFilter triggers processing of the request body as it calls getParameter on the request. 
-     * OrderedCharacterEncodingFilter then runs and sets the request's encoding. 
-     * Setting the request's encoding after its body has been processed is bad and, on WebLogic, 
+     * A workaround for the problem is that OrderedCharacterEncodingFilter is running after HiddenHttpMethodFilter.
+     * HiddenHttpMethodFilter triggers processing of the request body as it calls getParameter on the request.
+     * OrderedCharacterEncodingFilter then runs and sets the request's encoding.
+     * Setting the request's encoding after its body has been processed is bad and, on WebLogic,
      * causes the request to lose track of all its multipart data.
-     * 
-     * This causes issues with the HiddenHttpMethodFilter. If this one is registered first, it already accesses 
+     *
+     * This causes issues with the HiddenHttpMethodFilter. If this one is registered first, it already accesses
      * the request parameters before the encoding is enforced by the CharacterEncodingFilter
      * and the request data is already in the wrong format.
-     * 
+     *
      * https://github.com/spring-projects/spring-boot/issues/2862
      * https://github.com/spring-projects/spring-boot/issues/2148
      */
     @Bean
     @ConditionalOnProperty("weblogic.Name")
     OrderedCharacterEncodingFilter characterEncodingFilter() {
-    	OrderedCharacterEncodingFilter filter = new OrderedCharacterEncodingFilter();
-    	filter.setEncoding(this.properties.getCharset().name());
-    	filter.setForceEncoding(this.properties.isForce());
+        OrderedCharacterEncodingFilter filter = new OrderedCharacterEncodingFilter();
+        filter.setEncoding(Charset.forName(encodingCharset).name());
+        filter.setForceEncoding(encodingForce);
         filter.setOrder(Ordered.LOWEST_PRECEDENCE);
-    	return filter;
+        return filter;
     }
-    
+
 }

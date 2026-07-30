@@ -97,7 +97,7 @@ public class HtmlToPdfTransformer {
             transformer.transform(source, res);
 
             return out;
-        } catch (TransformerException | FOPException | IOException e) {
+        } catch (TransformerException | FOPException e) {
             throw new PdfRenderingException("Something went wrong while generating the PDF file.", e);
         }
     }

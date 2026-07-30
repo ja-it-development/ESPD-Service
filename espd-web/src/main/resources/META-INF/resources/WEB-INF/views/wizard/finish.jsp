@@ -31,7 +31,7 @@
 
 <c:set var="ESOP_SESSION" value="${not empty sessionScope.ESOP_VISITORID}"/>
 
-<form:form id="espdform" role="form" class="form-horizontal" method="post" commandName="espd" data-toggle="validator">
+<form:form id="espdform" role="form" class="form-horizontal" method="post" modelAttribute="espd" data-toggle="validator">
     <div class="panel-default">
         <tiles:insertDefinition name="progress">
             <tiles:putAttribute name="agent" value="${agent}"/>

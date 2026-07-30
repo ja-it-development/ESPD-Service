@@ -284,7 +284,7 @@ request.setAttribute("qualityAssuranceListEO", CriteriaTemplates.qualityAssuranc
     <div class="loader-section section-right"></div>
 </div>
 
-<form:form id="espdform" role="form" class="form-horizontal" method="post" commandName="espd">
+<form:form id="espdform" role="form" class="form-horizontal" method="post" modelAttribute="espd">
 
     <c:set var="printingjsp" scope="request" value="${true}"/>
     <c:set var="htmlToPrint" scope="request">
