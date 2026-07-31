@@ -29,7 +29,7 @@
     <groupId>eu.europa.ec.grow.espd</groupId>
     <artifactId>espd</artifactId>
     <packaging>pom</packaging>
-    <version>2026.07-bsp-SNAPSHOT</version>
+    <version>2026.07-bsp-ee10-SNAPSHOT</version>
     <modules>
         <module>espd-libs</module>
         <module>espd-web</module>
